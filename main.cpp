@@ -28,6 +28,10 @@ class LongFloat
 {
     public:
     
+    LongFloat();
+    /*explicit*/ LongFloat(int);
+    LongFloat(double);
+
     std::vector<short> integers;
     std::vector<short> pointers;
     short sign;
@@ -38,13 +42,9 @@ class LongFloat
     void same_sign_substraction(const LongFloat&, const LongFloat&);
     void same_sign_addition(const LongFloat&, const LongFloat&);
     
-    LongFloat();
-    LongFloat(int);
-    LongFloat(double);
-    
-    friend CmpSign compare_abs(const LongFloat&, const LongFloat&);
-    friend CmpSign compare(const LongFloat&, const LongFloat&);
-    friend LongFloat longDivision(const LongFloat& left, const LongFloat& right, int precision);
+    CmpSign compare_abs(const LongFloat&, const LongFloat&);
+    CmpSign compare(const LongFloat&, const LongFloat&);
+    friend LongFloat longDivision(const LongFloat&, const LongFloat&, int);
     
     bool is_zero() const;
     std::string to_string() const;
@@ -53,7 +53,7 @@ class LongFloat
     operator std::string() {return this->to_string();}
     operator int() {return this->to_int();}
     
-    friend std::istream& operator>>(std::istream& is, LongFloat& obj);
+    friend std::istream& operator>>(std::istream&, LongFloat&);
     
     friend LongFloat operator+(const LongFloat&, const LongFloat&);
     friend LongFloat operator-(const LongFloat&, const LongFloat&);
@@ -66,6 +66,9 @@ class LongFloat
     friend bool operator<=(const LongFloat&, const LongFloat&);
     friend bool operator==(const LongFloat&, const LongFloat&);
     friend bool operator!=(const LongFloat&, const LongFloat&);
+
+    private:
+
 };
 
 LongFloat::LongFloat()
@@ -75,30 +78,30 @@ LongFloat::LongFloat()
     integers.resize(0);
 }
 
-LongFloat::LongFloat(int num)
+LongFloat::LongFloat(int num) : LongFloat(static_cast<double> num)
 {
-    sign = 1;
-    pointers.resize(0);
-    integers.resize(0);
-    if (num == 0)
-    {
-        return;
-    }
-    std::stringstream str_stream;
-    std::string str_num;
-    str_stream << num;
-    str_stream >> str_num;
+    // sign = 1;
+    // pointers.resize(0);
+    // integers.resize(0);
+    // if (num == 0)
+    // {
+    //     return;
+    // }
+    // std::stringstream str_stream;
+    // std::string str_num;
+    // str_stream << num;
+    // str_stream >> str_num;
     
-    int i = 0;
-    if (num < 0)
-    {
-        sign == -1;
-        i++;
-    }
-    for (; i < str_num.length(); i++)
-    {
-        integers.push_back(str_num[i] - '0');
-    }
+    // int i = 0;
+    // if (num < 0)
+    // {
+    //     sign == -1;
+    //     i++;
+    // }
+    // for (; i < str_num.length(); i++)
+    // {
+    //     integers.push_back(str_num[i] - '0');
+    // }
 }
 
 LongFloat::LongFloat(double num)
@@ -346,6 +349,8 @@ LongFloat operator+(const LongFloat& left, const LongFloat& right)
     else if (compare_abs(left, right) == CmpSign::More)
     {
         res.same_sign_substraction(left, right);
+        // res = left.sub(right); 
+        // res = left - right;
         res.sign = left.sign;
     }
     else
@@ -525,6 +530,15 @@ void LongFloat::same_sign_substraction(const LongFloat& left, const LongFloat& r
     simplify_end(this->pointers);
 }
 
+/* std::strong_ordering operator<=>(const LongFloat& left, const LongFloat& right) {
+    CmpSign cmp = compare(left, right);
+    if (cmp == CmpSign::More)
+        return std::strong_ordering::grater;
+        // return std::strong_ordering::less;
+        // return std::strong_ordering::equal;
+    
+} */
+
 bool operator>(const LongFloat& left, const LongFloat& right)
 {
     CmpSign cmp = compare(left, right);
@@ -563,7 +577,6 @@ bool operator<=(const LongFloat& left, const LongFloat& right)
 
 LongFloat longDivision(const LongFloat& left, const LongFloat& right, int precision = 0)
 {
-
     LongFloat _left = left;
     _left.sign = 1;
     LongFloat _right = right;
