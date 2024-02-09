@@ -9,6 +9,3 @@ main.exe: main.o
 clean:
 	rm -f *.o all
 	rm -f *.exe all
-
-# add.o: add.asm
-# 	echo "Did nothing"
