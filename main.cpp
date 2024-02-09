@@ -27,40 +27,53 @@ void simplify_beg(std::vector<short>& vec)
 class LongFloat
 {
     public:
+    
     std::vector<short> integers;
     std::vector<short> pointers;
     short sign;
-    LongFloat()
-    {
-        sign = 1;
-        pointers.resize(0);
-        integers.resize(0);
-    }
-    LongFloat(int);
-    LongFloat(double);
     
     void set_precision(int);
     void mult_by_base();
     void div_by_base();
-    void same_sign_substraction(const LongFloat& left, const LongFloat& right);
-    void same_sign_addition(const LongFloat& left, const LongFloat& right);
+    void same_sign_substraction(const LongFloat&, const LongFloat&);
+    void same_sign_addition(const LongFloat&, const LongFloat&);
+    
+    LongFloat();
+    LongFloat(int);
+    LongFloat(double);
+    
     friend CmpSign compare_abs(const LongFloat&, const LongFloat&);
     friend CmpSign compare(const LongFloat&, const LongFloat&);
     friend LongFloat longDivision(const LongFloat& left, const LongFloat& right, int precision);
     
     bool is_zero() const;
-    std::string to_string();
-    int to_int();
+    std::string to_string() const;
+    int to_int() const;
     
     operator std::string() {return this->to_string();}
     operator int() {return this->to_int();}
     
     friend std::istream& operator>>(std::istream& is, LongFloat& obj);
-    friend LongFloat operator+(const LongFloat& left, const LongFloat& right);
-    friend LongFloat operator-(const LongFloat& left, const LongFloat& right);
-    friend LongFloat operator*(const LongFloat& left, const LongFloat& right);
-    friend bool operator>(const LongFloat& left, const LongFloat& right);
+    
+    friend LongFloat operator+(const LongFloat&, const LongFloat&);
+    friend LongFloat operator-(const LongFloat&, const LongFloat&);
+    friend LongFloat operator*(const LongFloat&, const LongFloat&);
+    friend LongFloat operator/(const LongFloat&, const LongFloat&);
+    
+    friend bool operator>(const LongFloat&, const LongFloat&);
+    friend bool operator>=(const LongFloat&, const LongFloat&);
+    friend bool operator<(const LongFloat&, const LongFloat&);
+    friend bool operator<=(const LongFloat&, const LongFloat&);
+    friend bool operator==(const LongFloat&, const LongFloat&);
+    friend bool operator!=(const LongFloat&, const LongFloat&);
 };
+
+LongFloat::LongFloat()
+{
+    sign = 1;
+    pointers.resize(0);
+    integers.resize(0);
+}
 
 LongFloat::LongFloat(int num)
 {
@@ -160,10 +173,24 @@ void LongFloat::div_by_base()
 
 bool LongFloat::is_zero() const
 {
-    return this->integers.size() == 0 && this->pointers.size() == 0;
+    for (int i = 0; i < this->integers.size(); i++)
+    {
+        if (this->integers[i] != 0)
+        {
+            return false;
+        }
+    }
+    for (int i = 0; i < this->pointers.size(); i++)
+    {
+        if (this->pointers[i] != 0)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
-std::string LongFloat::to_string()
+std::string LongFloat::to_string() const
 {
     if (this->is_zero())
     {
@@ -189,7 +216,7 @@ std::string LongFloat::to_string()
     return str;
 }
 
-int LongFloat::to_int()
+int LongFloat::to_int() const
 {
     int num = 0;
     for (auto el : this->integers)
@@ -387,6 +414,11 @@ LongFloat operator*(const LongFloat& left, const LongFloat& right) {
     ans.sign = left.sign * right.sign;
     
     return ans;
+}
+
+LongFloat operator/(const LongFloat& left, const LongFloat& right)
+{
+    return longDivision(left, right, 16);
 }
 
 void LongFloat::same_sign_addition(const LongFloat& left, const LongFloat& right)
