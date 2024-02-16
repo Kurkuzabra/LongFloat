@@ -540,49 +540,16 @@ namespace lft
         simplify_end(this->pointers);
     }
 
-    /* std::strong_ordering operator<=>(const LongFloat& left, const LongFloat& right) {
+    std::strong_ordering operator<=>(const LongFloat& left, const LongFloat& right)
+    {
         CmpSign cmp = compare(left, right);
         if (cmp == CmpSign::More)
             return std::strong_ordering::grater;
-            // return std::strong_ordering::less;
-            // return std::strong_ordering::equal;
-        
-    } */
-
-    bool operator>(const LongFloat& left, const LongFloat& right)
-    {
-        CmpSign cmp = compare(left, right);
-        return cmp == CmpSign::More;
-    }
-
-    bool operator<(const LongFloat& left, const LongFloat& right)
-    {
-        CmpSign cmp = compare(left, right);
-        return cmp == CmpSign::Less;
-    }
-
-    bool operator==(const LongFloat& left, const LongFloat& right)
-    {
-        CmpSign cmp = compare(left, right);
-        return cmp == CmpSign::Eq;
-    }
-
-    bool operator!=(const LongFloat& left, const LongFloat& right)
-    {
-        CmpSign cmp = compare(left, right);
-        return cmp != CmpSign::Eq;
-    }
-
-    bool operator>=(const LongFloat& left, const LongFloat& right)
-    {
-        CmpSign cmp = compare(left, right);
-        return cmp != CmpSign::Less;
-    }
-
-    bool operator<=(const LongFloat& left, const LongFloat& right)
-    {
-        CmpSign cmp = compare(left, right);
-        return cmp != CmpSign::More;
+        else if (cmp == CmpSign::Less)
+        {
+            return std::strong_ordering::less;
+        }
+        return std::strong_ordering::equal;
     }
 
     LongFloat longDivision(const LongFloat& left, const LongFloat& right, int precision = 0)
