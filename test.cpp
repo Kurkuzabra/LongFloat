@@ -1,8 +1,6 @@
-#include "main.h"
 #include <gtest/gtest.h>
 
 using namespace std;
-using namespace lft;
 
 TEST(TestGroupName, Subtest_1) {
   ASSERT_TRUE(1 == 1);
