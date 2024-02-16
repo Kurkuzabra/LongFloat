@@ -31,7 +31,7 @@ namespace lft
         public:
         
         LongFloat();
-        /*explicit*/ LongFloat(int);
+        explicit LongFloat(int);
         LongFloat(double);
         LongFloat(std::string);
 
@@ -42,16 +42,9 @@ namespace lft
         void set_precision(int);
         void mult_by_base();
         void div_by_base();
-        void same_sign_substraction(const LongFloat&, const LongFloat&);
-        void same_sign_addition(const LongFloat&, const LongFloat&);
-        
-        CmpSign compare_abs(const LongFloat&, const LongFloat&);
-        CmpSign compare(const LongFloat&, const LongFloat&);
         friend LongFloat longDivision(const LongFloat&, const LongFloat&, int);
         
         bool is_zero() const;
-        std::string to_string() const;
-        int to_int() const;
         
         operator std::string() {return this->to_string();}
         operator int() {return this->to_int();}
@@ -72,6 +65,15 @@ namespace lft
 
         private:
 
+        std::string to_string() const;
+        int to_int() const;
+
+        void same_sign_substraction(const LongFloat&, const LongFloat&);
+        void same_sign_addition(const LongFloat&, const LongFloat&);
+        
+        CmpSign compare_abs(const LongFloat&, const LongFloat&);
+        CmpSign compare(const LongFloat&, const LongFloat&);
+        
     };
 
     LongFloat::LongFloat()
