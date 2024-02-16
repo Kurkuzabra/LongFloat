@@ -1,10 +1,10 @@
 all: test.o test.exe
 
 test.o: test.cpp
-	g++ -m32 -c test.cpp -o test.o
+	g++ -c test.cpp -o test.o -lgtest -lpthread
 
-test.exe: test.o	
-	g++ -m32 test.o -o test.exe
+test.exe: test.o
+	g++  test.o -o test -lgtest -lpthread
 
 clean:
 	rm -f *.o all

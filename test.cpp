@@ -4,7 +4,7 @@
 using namespace std;
 using namespace lft;
 
-TEST(module_name, test_name)
+TEST(module1, test1)
 {
         EXPECT_TRUE(2 + 2 == 4);
         EXPECT_TRUE(LongFloat(0) == LongFloat(0.0));
