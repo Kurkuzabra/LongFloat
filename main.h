@@ -11,21 +11,6 @@ namespace lft
 {
     enum class CmpSign {More, Less, Eq};
 
-    void simplify_end(std::vector<short>& vec)
-    {
-        while (vec.size() > 0 && vec[vec.size() - 1] == 0)
-        {
-            vec.pop_back();
-        }
-    }
-
-    void simplify_beg(std::vector<short>& vec)
-    {
-        std::reverse(vec.begin(), vec.end());
-        simplify_end(vec);
-        std::reverse(vec.begin(), vec.end());
-    }
-
     class LongFloat
     {
         public:
@@ -68,13 +53,31 @@ namespace lft
         std::string to_string() const;
         int to_int() const;
 
-        void same_sign_substraction(const LongFloat&, const LongFloat&);
-        void same_sign_addition(const LongFloat&, const LongFloat&);
+        void write_sub(const LongFloat&, const LongFloat&);
+        void write_add(const LongFloat&, const LongFloat&);
         
         CmpSign compare_abs(const LongFloat&, const LongFloat&);
         CmpSign compare(const LongFloat&, const LongFloat&);
+
+        void simplify_end(std::vector<short>&)
+        void simplify_beg(std::vector<short>&);
         
     };
+
+    void LongFloat::simplify_end(std::vector<short>& vec)
+    {
+        while (vec.size() > 0 && vec[vec.size() - 1] == 0)
+        {
+            vec.pop_back();
+        }
+    }
+
+    void LongFloat::simplify_beg(std::vector<short>& vec)
+    {
+        std::reverse(vec.begin(), vec.end());
+        simplify_end(vec);
+        std::reverse(vec.begin(), vec.end());
+    }
 
     LongFloat::LongFloat()
     {
@@ -348,19 +351,17 @@ namespace lft
         LongFloat res = LongFloat();
         if (left.sign == right.sign)
         {
-            res.same_sign_addition(left, right);
+            res.write_add(left, right);
             res.sign = left.sign;
         }
         else if (compare_abs(left, right) == CmpSign::More)
         {
-            res.same_sign_substraction(left, right);
-            // res = left.sub(right); 
-            // res = left - right;
+            res.write_sub(left, right);
             res.sign = left.sign;
         }
         else
         {
-            res.same_sign_substraction(right, left);
+            res.write_sub(right, left);
             res.sign = right.sign;
         }
         return res;
@@ -371,17 +372,17 @@ namespace lft
         LongFloat res = LongFloat();
         if (left.sign != right.sign)
         {
-            res.same_sign_addition(left, right);
+            res.write_add(left, right);
             res.sign = left.sign;
         }
         else if (compare_abs(left, right) == CmpSign::More)
         {
-            res.same_sign_substraction(left, right);
+            res.write_sub(left, right);
             res.sign = left.sign;
         }
         else
         {
-            res.same_sign_substraction(right, left);
+            res.write_sub(right, left);
             res.sign = right.sign;
         }
         return res;
@@ -431,7 +432,7 @@ namespace lft
         return longDivision(left, right, 16);
     }
 
-    void LongFloat::same_sign_addition(const LongFloat& left, const LongFloat& right)
+    void LongFloat::write_add(const LongFloat& left, const LongFloat& right)
     {
         this->sign = left.sign;
         this->integers.resize(0);
@@ -483,7 +484,7 @@ namespace lft
     }
 
 
-    void LongFloat::same_sign_substraction(const LongFloat& left, const LongFloat& right)
+    void LongFloat::write_sub(const LongFloat& left, const LongFloat& right)
     {
         this->sign = left.sign;
         this->integers.resize(0);
@@ -540,16 +541,40 @@ namespace lft
         simplify_end(this->pointers);
     }
 
-    std::strong_ordering operator<=>(const LongFloat& left, const LongFloat& right)
+    bool operator>(const LongFloat& left, const LongFloat& right)
     {
         CmpSign cmp = compare(left, right);
-        if (cmp == CmpSign::More)
-            return std::strong_ordering::grater;
-        else if (cmp == CmpSign::Less)
-        {
-            return std::strong_ordering::less;
-        }
-        return std::strong_ordering::equal;
+        return cmp == CmpSign::More;
+    }
+
+    bool operator<(const LongFloat& left, const LongFloat& right)
+    {
+        CmpSign cmp = compare(left, right);
+        return cmp == CmpSign::Less;
+    }
+
+    bool operator==(const LongFloat& left, const LongFloat& right)
+    {
+        CmpSign cmp = compare(left, right);
+        return cmp == CmpSign::Eq;
+    }
+
+    bool operator!=(const LongFloat& left, const LongFloat& right)
+    {
+        CmpSign cmp = compare(left, right);
+        return cmp != CmpSign::Eq;
+    }
+
+    bool operator>=(const LongFloat& left, const LongFloat& right)
+    {
+        CmpSign cmp = compare(left, right);
+        return cmp != CmpSign::Less;
+    }
+
+    bool operator<=(const LongFloat& left, const LongFloat& right)
+    {
+        CmpSign cmp = compare(left, right);
+        return cmp != CmpSign::More;
     }
 
     LongFloat longDivision(const LongFloat& left, const LongFloat& right, int precision = 0)
@@ -629,12 +654,5 @@ namespace lft
         std::cout << "needed " << (float)time_req / CLOCKS_PER_SEC << "seconds to calc pi" << std::endl;
         
         return pi;
-    }
-
-    int main()
-    {
-        LongFloat lf = LongFloat(), rf = LongFloat();
-        std::cout << std::string(approximate_pi(100));
-        return 0;
     }
 }
