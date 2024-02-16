@@ -341,8 +341,8 @@ namespace lft
             }
             is.get(symbol);
         }
-        simplify_end(obj.pointers);
-        simplify_beg(obj.integers);
+        LongFloat::simplify_end(obj.pointers);
+        LongFloat::simplify_beg(obj.integers);
         return is;
     }
 
