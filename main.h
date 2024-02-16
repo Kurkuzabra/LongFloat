@@ -420,8 +420,8 @@ namespace lft
         ans.pointers = std::vector<short>(res.end() - left.pointers.size() - 
             right.pointers.size(), res.end());
         
-        simplify_end(ans.pointers);
-        simplify_beg(ans.integers);
+        ans.simplify_end(ans.pointers);
+        ans.simplify_beg(ans.integers);
         ans.sign = left.sign * right.sign;
         
         return ans;
