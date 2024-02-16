@@ -17,7 +17,7 @@ namespace lft
         
         LongFloat();
         explicit LongFloat(int);
-        LongFloat(double);
+        explicit LongFloat(double);
         LongFloat(std::string);
 
         std::vector<short> integers;
@@ -107,12 +107,8 @@ namespace lft
 
     LongFloat::LongFloat(int num) : LongFloat(static_cast<double>(num)) {}
 
-    LongFloat::LongFloat(double num)
+    LongFloat::LongFloat(double num) : LongFloat()
     {
-        sign = 1;
-        pointers.resize(0);
-        integers.resize(0);
-        
         std::stringstream str_stream;
         std::string str_num;
         str_stream << num;
