@@ -59,8 +59,8 @@ namespace lft
         CmpSign compare_abs(const LongFloat&, const LongFloat&);
         CmpSign compare(const LongFloat&, const LongFloat&);
 
-        void simplify_end(std::vector<short>&);
-        void simplify_beg(std::vector<short>&);
+        friend void simplify_end(std::vector<short>&);
+        friend void simplify_beg(std::vector<short>&);
         
     };
 
