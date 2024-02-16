@@ -86,12 +86,8 @@ namespace lft
         integers.resize(0);
     }
 
-    LongFloat::LongFloat(std::string str_num)
+    LongFloat::LongFloat(std::string str_num) : LongFloat()
     {
-        sign = 1;
-        pointers.resize(0);
-        integers.resize(0);
-        
         int i = 0;
         if (str_num.length() > 0 && str_num[0] == '-')
         {
