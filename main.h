@@ -59,8 +59,8 @@ namespace lft
         CmpSign compare_abs(const LongFloat&, const LongFloat&);
         CmpSign compare(const LongFloat&, const LongFloat&);
 
-        friend void simplify_end(std::vector<short>&);
-        friend void simplify_beg(std::vector<short>&);
+        void simplify_end(std::vector<short>&);
+        void simplify_beg(std::vector<short>&);
         
     };
 
@@ -341,8 +341,8 @@ namespace lft
             }
             is.get(symbol);
         }
-        LongFloat::simplify_end(obj.pointers);
-        LongFloat::simplify_beg(obj.integers);
+        obj.simplify_end(obj.pointers);
+        obj.simplify_beg(obj.integers);
         return is;
     }
 
