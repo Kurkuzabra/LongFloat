@@ -1,10 +1,10 @@
-all: main.o main.exe
+all: test.o test.exe
 
-main.o: main.c
-	gcc -m32 -c main.c -o main.o
+test.o: test.cpp
+	g++ -m32 -c test.cpp -o test.o
 
-main.exe: main.o	
-	gcc -m32 main.o -o main.exe
+test.exe: test.o	
+	g++ -m32 test.o -o test.exe
 
 clean:
 	rm -f *.o all
