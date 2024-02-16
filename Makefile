@@ -8,4 +8,4 @@ test.exe: test.o
 
 clean:
 	rm -f *.o all
-	rm -f *.exe all
+	rm test
