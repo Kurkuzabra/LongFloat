@@ -1,5 +1,7 @@
 BUILD_DIR := ./build
 SRC_DIR := ./src
+OBJS := $(BUILD_DIR)/test.o $(BUILD_DIR)/longfloat.o $(BUILD_DIR)/lftfuncs.o
+SRCS := $(SRC_DIR)/test.cpp $(SRC_DIR)/longfloat.cpp $(SRC_DIR)/lftfuncs.cpp
 
 all: $(BUILD_DIR) test.exe
 
@@ -15,8 +17,8 @@ $(BUILD_DIR)/test.o: $(SRC_DIR)/test.cpp
 $(BUILD_DIR)/lftfuncs.o: $(SRC_DIR)/lftfuncs.cpp
 	g++ -c $(SRC_DIR)/lftfuncs.cpp -o $(BUILD_DIR)/lftfuncs.o
 
-test.exe: $(BUILD_DIR)/test.o $(BUILD_DIR)/longfloat.o $(BUILD_DIR)/lftfuncs.o
-	g++ $(BUILD_DIR)/test.o $(BUILD_DIR)/longfloat.o $(BUILD_DIR)/lftfuncs.o -o test -lgtest -lpthread
+test.exe: $(OBJS)
+	g++ $(OBJS) -o test -lgtest -lpthread
 
 clean:
 	rm -rf $(BUILD_DIR)

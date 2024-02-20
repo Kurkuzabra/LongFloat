@@ -4,5 +4,5 @@
 
 namespace lft
 {
-    LongFloat approximate_pi(int digits);
+    LongFloat approximate_pi(int);
 }

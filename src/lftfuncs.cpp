@@ -6,7 +6,6 @@ namespace lft
     {
         clock_t time_req = clock();
         
-        
         LongFloat pi = LongFloat();
         LongFloat mult = LongFloat(1);
         LongFloat num_4 = LongFloat(4), num_1 = LongFloat(1), num_8 = LongFloat(8),
